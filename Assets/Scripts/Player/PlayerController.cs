@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
 
     Vector3 dirVec;
     GameObject scanObj;
+    public GameManager gameManager;
 
     private void Awake()
     {
@@ -22,13 +23,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        v = Input.GetAxisRaw("Vertical");
-        h = Input.GetAxisRaw("Horizontal");
+        v = gameManager.IsAction ? 0 : Input.GetAxisRaw("Vertical");
+        h = gameManager.IsAction ? 0 : Input.GetAxisRaw("Horizontal");
 
-        bool hDown = Input.GetButtonDown("Horizontal");
-        bool vDown = Input.GetButtonDown("Vertical");
-        bool hUp = Input.GetButtonUp("Horizontal");
-        bool vUp = Input.GetButtonUp("Vertical");
+        bool hDown = gameManager.IsAction ? false : Input.GetButtonDown("Horizontal");
+        bool vDown = gameManager.IsAction ? false : Input.GetButtonDown("Vertical");
+        bool hUp = gameManager.IsAction ? false : Input.GetButtonUp("Horizontal");
+        bool vUp = gameManager.IsAction ? false : Input.GetButtonUp("Vertical");
 
         if (hDown)
             isHorizonMove = true;
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour
         // Scan Object
         if(Input.GetButtonDown("Jump") && scanObj != null)
         {
-            Debug.Log($"This is {scanObj.name}!");
+            gameManager.Action(scanObj);
         }
     }
 
